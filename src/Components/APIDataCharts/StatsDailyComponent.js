@@ -16,7 +16,6 @@ const StatsDailyComponent = () => {
   const [activeChart, setActiveChart] = useState("impressions");
 
   const handleChartClick = (e, chart) => {
-    console.log("Chart clicked: ", chart);
     setActiveChart(chart.name);
   }
 
@@ -29,7 +28,6 @@ const StatsDailyComponent = () => {
         dataObj.clicks = Number(data.clicks);
         dataObj.revenue = Number(data.revenue);
         dataObj.name = `Day: ${index}`;
-        console.log(dataObj);
 
         setApiData(prevState => [...prevState, dataObj]);
       });
@@ -39,7 +37,6 @@ const StatsDailyComponent = () => {
     axios
       .get("/stats/daily")
       .then(res => {
-        console.log(res.data);
         translateData(res.data);
       })
       .catch(err => {
