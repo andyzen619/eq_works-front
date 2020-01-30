@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 import { Chart } from "react-charts";
 
 const DataComponent = () => {
   const [apiData, setApiData] = useState([]);
-  const [graphData, setGraphData] = useState();
 
   useEffect(() => {
-
     const translateData = dataArr => {
-      let result = [];
-      dataArr.forEach((data, index) => {
-        let resultData = [];
-        resultData.push(index);
-        resultData.push(data.events);
-        result.push(resultData);
+      const result = {};
+      dataArr.forEach(data => {
+        const hour = data.hour;
+        if (!(hour in result)) {
+          result[hour] = data.events;
+        } else {
+          result[hour] += data.events;
+        }
       });
       return result;
     };
@@ -23,66 +23,58 @@ const DataComponent = () => {
       .get("/events/hourly")
       .then(res => {
         const formattedApiData = translateData(res.data);
-        console.log(formattedApiData);
-        setApiData(formattedApiData);
+        Object.keys(formattedApiData).forEach(key => {
+          const dataObject = [];
+          dataObject.push(Number(key));
+          dataObject.push(formattedApiData[key]);
+          const newApiState = apiData;
+          apiData.push(dataObject);
+          setApiData(newApiState);
+        });
       })
       .catch(err => {
         console.log(err);
       });
   }, []);
 
-  const data = React.useMemo(
+  const data = useMemo(
     () => [
       {
-        label: "Api Data",
-        // data: [
-        //   [0, 1],
-        //   [1, 2],
-        //   [2, 4],
-        //   [3, 2],
-        //   [4, 7]
-        // ]
-
+        label: "Series 1",
         data: apiData
       },
       {
         label: "Series 2",
         data: [
-          [0, 3],
-          [1, 1],
-          [2, 5],
-          [3, 6],
-          [4, 4]
+          [0, 55],
+          [1, 22],
+          [2, 40],
+          [4, 5]
         ]
       }
     ],
-    []
+    [apiData]
   );
 
-  const axes = React.useMemo(
+  const axes = useMemo(
     () => [
       { primary: true, type: "linear", position: "bottom" },
       { type: "linear", position: "left" }
     ],
-    []
+    [apiData]
   );
-
-  debugger;
-
-  const lineChart = (
-    // A react-chart hyper-responsively and continuusly fills the available
-    // space of its parent element automatically
+  
+  console.log(data);
+  return (
     <div
       style={{
-        width: "400px",
-        height: "300px"
+        width: "1000px",
+        height: "1000px"
       }}
     >
       <Chart data={data} axes={axes} />
     </div>
   );
-
-  return lineChart;
 };
 
 export default DataComponent;
