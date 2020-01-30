@@ -19,7 +19,6 @@ const EventsDailyComponent = () => {
         const dataObj = {};
         dataObj.events = Number(data.events);
         dataObj.index = `Day: ${index}`;
-        console.log(dataObj);
 
         setApiData(prevState => [...prevState, dataObj])
       });
