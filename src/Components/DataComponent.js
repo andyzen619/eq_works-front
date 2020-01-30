@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Chart } from "react-charts";
+import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip} from "recharts";
 
 const DataComponent = () => {
   const [apiData, setApiData] = useState([]);
@@ -23,13 +23,15 @@ const DataComponent = () => {
       .get("/events/hourly")
       .then(res => {
         const formattedApiData = translateData(res.data);
+        console.log(formattedApiData);
+
         Object.keys(formattedApiData).forEach(key => {
-          const dataObject = [];
-          dataObject.push(Number(key));
-          dataObject.push(formattedApiData[key]);
-          const newApiState = apiData;
-          apiData.push(dataObject);
-          setApiData(newApiState);
+          const objData = {};
+          objData.name = `Hour: ${key}`;
+          objData.events = formattedApiData[key];
+          console.log(objData);
+
+          setApiData(prevState => [...prevState, objData]);
         });
       })
       .catch(err => {
@@ -37,43 +39,18 @@ const DataComponent = () => {
       });
   }, []);
 
-  const data = useMemo(
-    () => [
-      {
-        label: "Series 1",
-        data: apiData
-      },
-      {
-        label: "Series 2",
-        data: [
-          [0, 55],
-          [1, 22],
-          [2, 40],
-          [4, 5]
-        ]
-      }
-    ],
-    [apiData]
+  const chart = (
+    <LineChart width={800} height={800} data={apiData}>
+      <Line type="monotone" dataKey="events" stroke="#8884d8" />
+      <CartesianGrid stroke="#ccc"/>
+      <XAxis dataKey="name" />
+      <YAxis />
+      <Tooltip />
+    </LineChart>
   );
 
-  const axes = useMemo(
-    () => [
-      { primary: true, type: "linear", position: "bottom" },
-      { type: "linear", position: "left" }
-    ],
-    [apiData]
-  );
-  
-  console.log(data);
   return (
-    <div
-      style={{
-        width: "1000px",
-        height: "1000px"
-      }}
-    >
-      <Chart data={data} axes={axes} />
-    </div>
+    chart
   );
 };
 
