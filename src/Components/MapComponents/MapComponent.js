@@ -8,7 +8,6 @@ const MapComponent = () => {
   const [defaultCenter, setDefaultCenter] = useState({lat: 43.6532, lng: -79.3832});
 
   const mapOptions = () => {
-    // console.log(defaultCenter);
 
       return {
         center: defaultCenter,

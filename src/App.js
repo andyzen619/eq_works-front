@@ -12,8 +12,8 @@ function App() {
     <div className="App" style={{}}>
       {/* <EventsHourlyComponent/> */}
       <EventsDailyComponent/>
-      {/* <StatsDailyComponent/> */}
-      {/* <StatsHourlyComponent/> */}
+      {/* <StatsDailyComponent/>
+      <StatsHourlyComponent/> */}
       <MapComponent/>
     </div>
   );
