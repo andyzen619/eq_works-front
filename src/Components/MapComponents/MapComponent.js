@@ -5,15 +5,44 @@ import { Grid, Menu, Segment } from "semantic-ui-react";
 
 const MapComponent = () => {
   const [apiPoiData, setApiPoiData] = useState([]);
+  const [apiData, setApiData] = useState([]);
   const [defaultCenter, setDefaultCenter] = useState({
     lat: 43.6532,
     lng: -79.3832
   });
   const [activeItem, setActiveItem] = useState("Sunday");
 
+  const google = window.google;
+  const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+  const translateData = dataArr => {
+    const result = [];
+    for (let i = 0; i < 7; i++) {
+      result.push({ 1: 0, 2: 0, 3: 0, 4: 0, day: daysOfTheWeek[i] });
+    }
+
+    dataArr.forEach(data => {
+      const day = new Date(data.date).getDay();
+      const id = data.poi_id;
+      const events = Number(data.events);
+
+      result[day][id] += events;
+    });
+
+    result.forEach(day => {
+      setApiData(prevState => [...prevState, day]);
+    })
+  };
+
   const handleItemClick = (e, { name }) => {
     setActiveItem(name);
   };
+
+  const calculateIntensity = (day, id) => {
+    const dayIndex = daysOfTheWeek.indexOf(day);
+    const events = apiData[dayIndex][id];
+    return events * 100
+  }
 
   const mapOptions = () => {
     return {
@@ -22,6 +51,29 @@ const MapComponent = () => {
     };
   };
 
+  const overlays = () => {
+    if(apiPoiData.length > 0){
+      return [
+        new google.maps.Marker({
+          position: { lat: apiPoiData[0].lat, lng: apiPoiData[0].lon },
+          title: `${apiPoiData[0].name} events: ${calculateIntensity(activeItem, apiPoiData[0].poi_id)/100}`
+        }),
+        new google.maps.Circle({center: {lat: apiPoiData[0].lat, lng: apiPoiData[0].lon}, fillColor: '#8884d8', fillOpacity: 0.35, strokeWeight: 1, radius: calculateIntensity(activeItem, apiPoiData[0].poi_id)}),
+      ];
+    }
+  };
+
+  useEffect(() => {
+    axios
+      .get(`/events/daily/`)
+      .then(res => {
+        translateData(res.data);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }, []);
+  
   useEffect(() => {
     axios
       .get("/poi")
@@ -87,6 +139,7 @@ const MapComponent = () => {
           <Segment>
             <GMap
               options={mapOptions()}
+              overlays={overlays()}
               style={{ width: "100%", minHeight: "320px" }}
             />
           </Segment>
