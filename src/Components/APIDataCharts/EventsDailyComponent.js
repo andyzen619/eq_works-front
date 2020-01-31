@@ -33,6 +33,8 @@ const EventsDailyComponent = () => {
     result.forEach(day => {
       setApiData(prevState => [...prevState, day]);
     })
+
+    
   };
 
   useEffect(() => {
