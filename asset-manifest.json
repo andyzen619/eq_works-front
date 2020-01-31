@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/eq_works-front/static/css/main.d1b05096.chunk.css",
+    "main.js": "/eq_works-front/static/js/main.2eb3fc7a.chunk.js",
+    "main.js.map": "/eq_works-front/static/js/main.2eb3fc7a.chunk.js.map",
+    "runtime-main.js": "/eq_works-front/static/js/runtime-main.2be538d5.js",
+    "runtime-main.js.map": "/eq_works-front/static/js/runtime-main.2be538d5.js.map",
+    "static/css/2.d4166fa9.chunk.css": "/eq_works-front/static/css/2.d4166fa9.chunk.css",
+    "static/js/2.f41ef3f4.chunk.js": "/eq_works-front/static/js/2.f41ef3f4.chunk.js",
+    "static/js/2.f41ef3f4.chunk.js.map": "/eq_works-front/static/js/2.f41ef3f4.chunk.js.map",
+    "index.html": "/eq_works-front/index.html",
+    "precache-manifest.fd8e26a5ec8197dbf7245e67dc8f5abd.js": "/eq_works-front/precache-manifest.fd8e26a5ec8197dbf7245e67dc8f5abd.js",
+    "service-worker.js": "/eq_works-front/service-worker.js",
+    "static/css/2.d4166fa9.chunk.css.map": "/eq_works-front/static/css/2.d4166fa9.chunk.css.map",
+    "static/css/main.d1b05096.chunk.css.map": "/eq_works-front/static/css/main.d1b05096.chunk.css.map",
+    "static/js/2.f41ef3f4.chunk.js.LICENSE": "/eq_works-front/static/js/2.f41ef3f4.chunk.js.LICENSE",
+    "static/media/semantic.min.css": "/eq_works-front/static/media/outline-icons.ef60a4f6.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2be538d5.js",
+    "static/css/2.d4166fa9.chunk.css",
+    "static/js/2.f41ef3f4.chunk.js",
+    "static/css/main.d1b05096.chunk.css",
+    "static/js/main.2eb3fc7a.chunk.js"
+  ]
+}
