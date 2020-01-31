@@ -15,17 +15,26 @@ const MapComponent = () => {
   const [activeItem, setActiveItem] = useState("Sunday");
 
   const google = window.google;
-  const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const daysOfTheWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ];
 
-  const updateZoom = () => {
-    
-  }
+  const updateZoom = () => {};
 
   const getEvents = (day, id) => {
-    const dayIndex = daysOfTheWeek.indexOf(day);
-    const events = apiData[dayIndex][id];
-    return events;
-  }
+    if (apiData.length > 0) {
+      const dayIndex = daysOfTheWeek.indexOf(day);
+      const events = apiData[dayIndex][id];
+      return events;
+    }
+  };
 
   const translateData = dataArr => {
     const result = [];
@@ -43,7 +52,7 @@ const MapComponent = () => {
 
     result.forEach(day => {
       setApiData(prevState => [...prevState, day]);
-    })
+    });
   };
 
   const handleItemClick = (e, { name }) => {
@@ -51,10 +60,12 @@ const MapComponent = () => {
   };
 
   const calculateIntensity = (day, id) => {
-    const dayIndex = daysOfTheWeek.indexOf(day);
-    const events = apiData[dayIndex][id];
-    return events * 300
-  }
+    if (apiData.length > 0) {
+      const dayIndex = daysOfTheWeek.indexOf(day);
+      const events = apiData[dayIndex][id];
+      return events * 300;
+    }
+  };
 
   const mapOptions = () => {
     return {
@@ -64,28 +75,64 @@ const MapComponent = () => {
   };
 
   const overlays = () => {
-    if(apiPoiData.length > 0){
+    if (apiPoiData.length > 0) {
       return [
         new google.maps.Marker({
           position: { lat: apiPoiData[0].lat, lng: apiPoiData[0].lon },
-          title: `${apiPoiData[0].name} events: ${getEvents(activeItem, apiPoiData[0].poi_id)}`
+          title: `${apiPoiData[0].name} events: ${getEvents(
+            activeItem,
+            apiPoiData[0].poi_id
+          )}`
         }),
-        new google.maps.Circle({center: {lat: apiPoiData[0].lat, lng: apiPoiData[0].lon}, fillColor: '#8884d8', fillOpacity: 0.35, strokeWeight: 1, radius: calculateIntensity(activeItem, apiPoiData[0].poi_id)}),
+        new google.maps.Circle({
+          center: { lat: apiPoiData[0].lat, lng: apiPoiData[0].lon },
+          fillColor: "#8884d8",
+          fillOpacity: 0.35,
+          strokeWeight: 1,
+          radius: calculateIntensity(activeItem, apiPoiData[0].poi_id)
+        }),
         new google.maps.Marker({
           position: { lat: apiPoiData[1].lat, lng: apiPoiData[1].lon },
-          title: `${apiPoiData[1].name} events: ${getEvents(activeItem, apiPoiData[1].poi_id)}`
+          title: `${apiPoiData[1].name} events: ${getEvents(
+            activeItem,
+            apiPoiData[1].poi_id
+          )}`
         }),
-        new google.maps.Circle({center: {lat: apiPoiData[1].lat, lng: apiPoiData[1].lon}, fillColor: '#82ca9d', fillOpacity: 0.35, strokeWeight: 1, radius: calculateIntensity(activeItem, apiPoiData[1].poi_id)}),
+        new google.maps.Circle({
+          center: { lat: apiPoiData[1].lat, lng: apiPoiData[1].lon },
+          fillColor: "#82ca9d",
+          fillOpacity: 0.35,
+          strokeWeight: 1,
+          radius: calculateIntensity(activeItem, apiPoiData[1].poi_id)
+        }),
         new google.maps.Marker({
           position: { lat: apiPoiData[2].lat, lng: apiPoiData[2].lon },
-          title: `${apiPoiData[2].name} events: ${getEvents(activeItem, apiPoiData[2].poi_id)}`
+          title: `${apiPoiData[2].name} events: ${getEvents(
+            activeItem,
+            apiPoiData[2].poi_id
+          )}`
         }),
-        new google.maps.Circle({center: {lat: apiPoiData[2].lat, lng: apiPoiData[2].lon}, fillColor: '#b41e22', fillOpacity: 0.35, strokeWeight: 1, radius: calculateIntensity(activeItem, apiPoiData[2].poi_id)}),
+        new google.maps.Circle({
+          center: { lat: apiPoiData[2].lat, lng: apiPoiData[2].lon },
+          fillColor: "#b41e22",
+          fillOpacity: 0.35,
+          strokeWeight: 1,
+          radius: calculateIntensity(activeItem, apiPoiData[2].poi_id)
+        }),
         new google.maps.Marker({
           position: { lat: apiPoiData[3].lat, lng: apiPoiData[3].lon },
-          title: `${apiPoiData[3].name} events: ${getEvents(activeItem, apiPoiData[3].poi_id)}`
+          title: `${apiPoiData[3].name} events: ${getEvents(
+            activeItem,
+            apiPoiData[3].poi_id
+          )}`
         }),
-        new google.maps.Circle({center: {lat: apiPoiData[3].lat, lng: apiPoiData[3].lon}, fillColor: '#d66826', fillOpacity: 0.35, strokeWeight: 1, radius: calculateIntensity(activeItem, apiPoiData[3].poi_id)}),
+        new google.maps.Circle({
+          center: { lat: apiPoiData[3].lat, lng: apiPoiData[3].lon },
+          fillColor: "#d66826",
+          fillOpacity: 0.35,
+          strokeWeight: 1,
+          radius: calculateIntensity(activeItem, apiPoiData[3].poi_id)
+        })
       ];
     }
   };
@@ -100,7 +147,7 @@ const MapComponent = () => {
         console.log(err);
       });
   }, []);
-  
+
   useEffect(() => {
     axios
       .get("/poi")
