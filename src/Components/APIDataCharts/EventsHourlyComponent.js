@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip} from "recharts";
+import {Header} from 'semantic-ui-react';
 
 const EventsHourlyComponent = () => {
   const [apiData, setApiData] = useState([]);
@@ -49,7 +50,12 @@ const EventsHourlyComponent = () => {
   );
 
   return (
-    chart
+    <div style={{padding:'5%'}}>
+      <Header as="h3" dividing>
+        Hourl Events
+      </Header>
+      {chart}
+    </div>
   );
 };
 

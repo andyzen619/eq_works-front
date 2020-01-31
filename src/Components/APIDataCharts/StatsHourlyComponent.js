@@ -8,7 +8,7 @@ import {
   YAxis,
   Tooltip
 } from "recharts";
-import {Menu} from 'semantic-ui-react';
+import {Menu, Header} from 'semantic-ui-react';
 
 const StatsHourlyComponent = () => {
   const [apiData, setApiData] = useState([]);
@@ -74,7 +74,10 @@ const StatsHourlyComponent = () => {
   );
 
   return (
-    <div>
+    <div style={{padding:'5%'}}>
+      <Header as="h3" dividing>
+        Hourly Stats
+      </Header>
       <Menu pointing>
         <Menu.Item
           name="impressions"

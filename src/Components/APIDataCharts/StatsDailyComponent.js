@@ -8,7 +8,7 @@ import {
   YAxis,
   Tooltip
 } from "recharts";
-import {Menu} from 'semantic-ui-react';
+import {Menu, Header} from 'semantic-ui-react';
 
 const StatsDailyComponent = () => {
 
@@ -37,6 +37,7 @@ const StatsDailyComponent = () => {
     axios
       .get("/stats/daily")
       .then(res => {
+        console.log(res.data);
         translateData(res.data);
       })
       .catch(err => {
@@ -59,7 +60,10 @@ const StatsDailyComponent = () => {
   );
 
   return (
-    <div>
+    <div style={{padding:'5%'}}>
+      <Header as="h3" dividing>
+        Daily Stats
+      </Header>
       <Menu pointing >
         <Menu.Item
           name='impressions'
