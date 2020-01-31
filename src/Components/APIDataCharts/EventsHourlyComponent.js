@@ -6,7 +6,13 @@ import {Header} from 'semantic-ui-react';
 const EventsHourlyComponent = () => {
   const [apiData, setApiData] = useState([]);
 
+  //Sets state for API data
   useEffect(() => {
+
+    /**
+     * Accepts req query and sets states for API data
+     * @param {*} dataArr 
+     */
     const translateData = dataArr => {
 
       const result = {};

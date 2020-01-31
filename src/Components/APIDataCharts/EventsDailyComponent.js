@@ -16,6 +16,10 @@ const EventsDailyComponent = () => {
   const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
   const [apiData, setApiData] = useState([]);
 
+  /**
+   * Sets state given api data query
+   * @param {*} dataArr 
+   */
   const translateData = dataArr => {
     const result = [];
     for (let i = 0; i < 7; i++) {

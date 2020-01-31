@@ -11,9 +11,9 @@ const MapComponent = () => {
     lng: -79.3832
   });
   const [zoom, setZoom] = useState(12);
-
   const [activeItem, setActiveItem] = useState("Sunday");
 
+  //Global variables
   const google = window.google;
   const daysOfTheWeek = [
     "Sunday",
@@ -26,8 +26,16 @@ const MapComponent = () => {
     "Sunday"
   ];
 
+  /**
+   * On zoom handler for google maps
+   */
   const updateZoom = () => {};
 
+  /**
+   * Returns the number of daily events for a given POI_ID
+   * @param {*} day 
+   * @param {*} id 
+   */
   const getEvents = (day, id) => {
     if (apiData.length > 0) {
       const dayIndex = daysOfTheWeek.indexOf(day);
@@ -36,12 +44,19 @@ const MapComponent = () => {
     }
   };
 
+  /**
+   * Set the state for api Data for daily events.
+   * @param {*} dataArr 
+   */
   const translateData = dataArr => {
+
+    //Initialize array of obj to be used to set apiData state
     const result = [];
     for (let i = 0; i < 7; i++) {
       result.push({ 1: 0, 2: 0, 3: 0, 4: 0, day: daysOfTheWeek[i] });
     }
 
+    //Fills the data array
     dataArr.forEach(data => {
       const day = new Date(data.date).getDay();
       const id = data.poi_id;
@@ -50,15 +65,22 @@ const MapComponent = () => {
       result[day][id] += events;
     });
 
+    //Sets state
     result.forEach(day => {
       setApiData(prevState => [...prevState, day]);
     });
   };
 
+  //On click handler for specific day
   const handleItemClick = (e, { name }) => {
     setActiveItem(name);
   };
 
+  /**
+   * Calculated intensity of data on google maps component
+   * @param {*} day 
+   * @param {*} id 
+   */
   const calculateIntensity = (day, id) => {
     if (apiData.length > 0) {
       const dayIndex = daysOfTheWeek.indexOf(day);
@@ -67,6 +89,9 @@ const MapComponent = () => {
     }
   };
 
+  /**
+   * Used to configure maps
+   */
   const mapOptions = () => {
     return {
       center: defaultCenter,
@@ -74,6 +99,9 @@ const MapComponent = () => {
     };
   };
 
+  /**
+   * Use to configure map overlays
+   */
   const overlays = () => {
     if (apiPoiData.length > 0) {
       return [
@@ -137,6 +165,7 @@ const MapComponent = () => {
     }
   };
 
+  //Sets state for api data
   useEffect(() => {
     axios
       .get(`/events/daily/`)
@@ -148,6 +177,7 @@ const MapComponent = () => {
       });
   }, []);
 
+  //Set state for POI api data
   useEffect(() => {
     axios
       .get("/poi")
@@ -160,6 +190,7 @@ const MapComponent = () => {
       });
   }, []);
 
+  //Sets the center of the map 
   useEffect(() => {
     if (apiPoiData.length > 0) {
       setDefaultCenter({ lat: apiPoiData[3].lat, lng: apiPoiData[3].lon });
